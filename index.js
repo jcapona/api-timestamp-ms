@@ -18,7 +18,7 @@ app.get("/:date", function(request, response) {
     unixDate = Number(date);
     naturalDate = toNatural(date);
   }
-  else if(date.match(/^\w+ \d{1,2}, \d\d\d\d$/) !== null)
+  else if(date.match(/^\w+ \d{1,2}, \d+$/) !== null)
   { 
     unixDate = toUnix(date);
     naturalDate = unixDate == null? null:date;
@@ -41,7 +41,6 @@ function toNatural(dateParam)
 function toUnix(date)
 {
   var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  
   
   var month = date.split(",")[0].split(" ")[0];
   var day = date.split(",")[0].split(" ")[1];

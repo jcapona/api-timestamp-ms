@@ -20,8 +20,14 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 app.set('view engine', 'jade');
 
-app.get('/', function(request, response) {
+app.get("/", function(request, response) {
   response.render("index");
+});
+
+app.get("/:date", function(request, response) {
+  var date = request.params.date;
+  console.log(date);
+  response.render("index",{"quote":date});
 });
 
 app.listen(app.get('port'));

@@ -18,16 +18,10 @@ app.get("/:date", function(request, response) {
     unixDate = Number(date);
     naturalDate = toNatural(date);
   }
-  else
-  {
-    var month = date.split(",")[0].split(" ")[0];
-    var day = date.split(",")[0].split(" ")[1];
-    var year = date.split(",")[1];
-    if((month!==undefined)&&(day!==undefined)&&(year!==undefined))
-    {  
-      naturalDate = date;
-      unixDate = toUnix(year,month,day);
-    }
+  else if(date.match(/^\w+ \d{1,2}, \d\d\d\d$/) !== null)
+  { 
+    unixDate = toUnix(date);
+    naturalDate = unixDate == null? null:date;
   }
   var json = JSON.stringify({"unix":unixDate,"natural":naturalDate});
   response.send(json);
@@ -44,8 +38,21 @@ function toNatural(dateParam)
   return (months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear());
 }
 
-function toUnix(year,month,day)
+function toUnix(date)
 {
-  var date = new Date(month+" "+day+", "+year);
-  return Number(date.getTime()/1000);
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  
+  
+  var month = date.split(",")[0].split(" ")[0];
+  var day = date.split(",")[0].split(" ")[1];
+  var year = date.split(",")[1];
+ 
+  if(months.indexOf(month) == -1)
+    return null;
+  
+  if((day < 1)||(day > 31))
+    return null;
+  
+  var unix = new Date(month+" "+day+", "+year);
+  return Number(unix.getTime()/1000);
 }

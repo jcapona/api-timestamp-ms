@@ -24,7 +24,7 @@ app.get("/:date", function(request, response) {
     naturalDate = unixDate == null? null:date;
   }
   var json = JSON.stringify({"unix":unixDate,"natural":naturalDate});
-  response.send(json);
+  response.end(json);
 
 });
 
